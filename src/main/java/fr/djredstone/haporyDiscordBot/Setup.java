@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import fr.djredstone.haporyDiscordBot.classes.mysql.DatabaseManager;
 import fr.djredstone.haporyDiscordBot.commands.CommandMoney;
+import fr.djredstone.haporyDiscordBot.commands.CommandObjects;
 import fr.djredstone.haporyDiscordBot.commands.CommandPing;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,16 +49,20 @@ public class Setup implements EventListener {
 
         setupCommands(Main.getJda());
 
+        final OptionData optionUser = new OptionData(OptionType.USER, "utilisateur", "Un membre");
+
         Main.getJda().updateCommands().addCommands(
                 Commands.slash("ping", "Pong"),
-                Commands.slash("money", "Affiche l'argent").addOptions(new OptionData(OptionType.USER, "utilisateur", "Un membre"))
+                Commands.slash("money", "Affiche l'argent").addOptions(optionUser),
+                Commands.slash("objects", "Affiche les objets en ta posséssion ou d'un autre memebre").addOptions(optionUser)
         ).queue();
 
     }
 
     private static void setupCommands(JDA jda) {
-        jda.addEventListener(new CommandPing());
         jda.addEventListener(new CommandMoney());
+        jda.addEventListener(new CommandObjects());
+        jda.addEventListener(new CommandPing());
     }
 
     public static void DBConnect() {
