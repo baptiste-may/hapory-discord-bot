@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
-group 'fr.djredstone.coolyougamingDiscordBot'
+group 'fr.hapory.commissaire-priseur'
 version '1.0'
 
 repositories {
@@ -38,6 +38,6 @@ tasks.withType(JavaCompile) {
 
 jar {
     manifest{
-        attributes 'Class-Path': '/libs/coolyougaming-discord-bot-1.0.jar', 'Main-Class': 'fr.djredstone.coolyougamingDiscordBot.Main'
+        attributes 'Class-Path': '/libs/hapory-discord-bot-1.0.jar', 'Main-Class': 'fr.djredstone.haporyDiscordBot.Main'
     }
 }

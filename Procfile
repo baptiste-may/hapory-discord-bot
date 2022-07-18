@@ -1,1 +1,1 @@
-worker: java -jar build/libs/coolyougaming-discord-bot-1.0-all.jar
+worker: java -jar build/libs/hapory-discord-bot-1.0-all.jar

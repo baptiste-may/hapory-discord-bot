@@ -1,10 +1,11 @@
-package fr.djredstone.coolyougamingDiscordBot;
+package fr.djredstone.haporyDiscordBot;
 
 import javax.security.auth.login.LoginException;
 import java.util.EnumSet;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -12,8 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import fr.djredstone.coolyougamingDiscordBot.commands.CommandPing;
-import fr.djredstone.coolyougamingDiscordBot.commands.CommandRoles;
+import fr.djredstone.haporyDiscordBot.commands.CommandPing;
 import org.jetbrains.annotations.NotNull;
 
 public class Setup implements EventListener {
@@ -28,6 +28,7 @@ public class Setup implements EventListener {
 
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.EMOTE);
         builder.enableCache(CacheFlag.VOICE_STATE);
+        builder.setActivity(Activity.playing("chercher des pépites"));
         try {
             Main.setJda(builder.build());
         } catch (LoginException e) {
@@ -39,15 +40,13 @@ public class Setup implements EventListener {
         setupCommands(Main.getJda());
 
         Main.getJda().updateCommands().addCommands(
-                Commands.slash("ping", "Ping"),
-                Commands.slash("roles", "Roles")
+                Commands.slash("ping", "Ping")
         ).queue();
 
     }
 
     private static void setupCommands(JDA jda) {
         jda.addEventListener(new CommandPing());
-        jda.addEventListener(new CommandRoles());
     }
 
     @Override

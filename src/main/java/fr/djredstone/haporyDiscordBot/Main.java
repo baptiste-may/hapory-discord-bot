@@ -1,4 +1,4 @@
-package fr.djredstone.coolyougamingDiscordBot;
+package fr.djredstone.haporyDiscordBot;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

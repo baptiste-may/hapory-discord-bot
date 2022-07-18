@@ -1,9 +1,9 @@
-package fr.djredstone.coolyougamingDiscordBot.commands;
+package fr.djredstone.haporyDiscordBot.commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import fr.djredstone.coolyougamingDiscordBot.Main;
+import fr.djredstone.haporyDiscordBot.Main;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandPing extends ListenerAdapter {
