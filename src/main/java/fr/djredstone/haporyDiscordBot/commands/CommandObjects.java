@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 
 import fr.djredstone.haporyDiscordBot.classes.CustomObject;
 import fr.djredstone.haporyDiscordBot.classes.objects;
@@ -38,15 +39,14 @@ public class CommandObjects extends ListenerAdapter {
         } else {
             try {
                 final ArrayList<CustomObject> list = objects.get(event.getUser());
-                final EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("Votre garage");
                 if (list.isEmpty())
-                    embed.setDescription("Vous n'avez aucun objets !");
+                    event.reply("Votre garage est vide").setEphemeral(true).queue();
                 else {
+                    ReplyCallbackAction message = event.reply("Votre garage :").setEphemeral(true);
                     for (CustomObject object : list)
-                        embed.addField(object.getName(), object.getDescription(), true);
+                        message.addEmbeds(new EmbedBuilder().setTitle(object.getName()).setDescription(object.getDescription()).setThumbnail(object.getImgURL()).build());
+                    message.queue();
                 }
-                event.replyEmbeds(embed.build()).setEphemeral(true).queue();
             } catch (SQLException e) {
                 e.printStackTrace();
                 event.reply("Une erreur est survenue !").setEphemeral(true).queue();

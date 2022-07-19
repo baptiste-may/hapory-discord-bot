@@ -1,5 +1,6 @@
 package fr.djredstone.haporyDiscordBot.classes;
 
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import net.dv8tion.jda.api.entities.User;
 
 import fr.djredstone.haporyDiscordBot.Main;
 import fr.djredstone.haporyDiscordBot.Utils;
-import org.javatuples.Quartet;
 
 public class objects {
 
@@ -26,28 +26,42 @@ public class objects {
 
         ArrayList<CustomObject> list = new ArrayList<>();
         while (resultSet.next())
-            list.add(new CustomObject(resultSet.getString("name"), resultSet.getString("description"), resultSet.getInt("rarity"), resultSet.getInt("price")));
+            list.add(new CustomObject(resultSet.getString("id"), resultSet.getString("name"), resultSet.getString("description"), resultSet.getString("img_URL"), resultSet.getInt("rarity"), resultSet.getInt("price")));
 
         return list;
     }
 
+    public static CustomObject getById(String ID) throws SQLException {
+        final PreparedStatement preparedStatement = Utils.createPreparedStatement("SELECT * FROM user_objects WHERE id = ?");
+        preparedStatement.setString(1, ID);
+        final ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next())
+            return new CustomObject(resultSet.getString("id"), resultSet.getString("name"), resultSet.getString("description"), resultSet.getString("img_URL"), resultSet.getInt("rarity"), resultSet.getInt("price"));
+        else
+            return null;
+    }
+
     public static void remove(User user, CustomObject object) throws SQLException {
 
-        final PreparedStatement preparedStatement = Utils.createPreparedStatement("DELETE FROM user_objects WHERE (uuid = ? AND name = ? AND description = ? AND rarity = ? AND price = ?)");
+        final PreparedStatement preparedStatement = Utils.createPreparedStatement("DELETE FROM user_objects WHERE (uuid = ? AND id = ? AND name = ? AND description = ? AND img_URL = ? AND rarity = ? AND price = ?)");
         preparedStatement.setString(1, user.getId());
-        preparedStatement.setString(2, object.getName());
-        preparedStatement.setString(3, object.getDescription());
-        preparedStatement.setInt(4, object.getRarity());
-        preparedStatement.setInt(5, object.getPrice());
-        final boolean resultSet = preparedStatement.execute();
+        preparedStatement.setString(2, object.getID());
+        preparedStatement.setString(3, object.getName());
+        preparedStatement.setString(4, object.getDescription());
+        preparedStatement.setString(5, object.getImgURL());
+        preparedStatement.setInt(6, object.getRarity());
+        preparedStatement.setInt(7, object.getPrice());
+        preparedStatement.execute();
 
-        if (resultSet) {
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setTitle("Objet retiré à " + user.getAsTag())
-                    .addField(object.getName(), object.getDescription(), false);
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Objet retiré à " + user.getAsTag())
+                .setColor(Color.RED)
+                .addField(object.getName(), object.getDescription(), false)
+                .setThumbnail(object.getImgURL())
+                .setFooter("ID de l'objet : " + object.getID());
 
-            Objects.requireNonNull(logChannel).sendMessage("").queue();
-        }
+        Objects.requireNonNull(logChannel).sendMessageEmbeds(embed.build()).queue();
 
     }
 
