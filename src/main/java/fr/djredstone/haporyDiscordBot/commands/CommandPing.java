@@ -11,7 +11,7 @@ public class CommandPing extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equalsIgnoreCase("ping")) return;
-        event.reply("Pong ! (`" + Main.getJda().getGatewayPing() + " ms`)").queue();
+        event.reply("Pong ! (`" + Main.getJda().getGatewayPing() + " ms`)").setEphemeral(true).queue();
     }
 
 }

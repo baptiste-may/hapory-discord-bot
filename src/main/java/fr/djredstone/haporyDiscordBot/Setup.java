@@ -20,6 +20,7 @@ import fr.djredstone.haporyDiscordBot.classes.mysql.DatabaseManager;
 import fr.djredstone.haporyDiscordBot.commands.CommandMoney;
 import fr.djredstone.haporyDiscordBot.commands.CommandObjects;
 import fr.djredstone.haporyDiscordBot.commands.CommandPing;
+import fr.djredstone.haporyDiscordBot.commands.CommandSell;
 import org.jetbrains.annotations.NotNull;
 
 public class Setup implements EventListener {
@@ -54,7 +55,8 @@ public class Setup implements EventListener {
         Main.getJda().updateCommands().addCommands(
                 Commands.slash("ping", "Pong"),
                 Commands.slash("money", "Affiche l'argent").addOptions(optionUser),
-                Commands.slash("objects", "Affiche les objets en ta posséssion ou d'un autre memebre").addOptions(optionUser)
+                Commands.slash("objects", "Affiche les objets en ta posséssion ou d'un autre memebre").addOptions(optionUser),
+                Commands.slash("sell", "Vend des items de ton inventaire")
         ).queue();
 
     }
@@ -63,6 +65,7 @@ public class Setup implements EventListener {
         jda.addEventListener(new CommandMoney());
         jda.addEventListener(new CommandObjects());
         jda.addEventListener(new CommandPing());
+        jda.addEventListener(new CommandSell());
     }
 
     public static void DBConnect() {

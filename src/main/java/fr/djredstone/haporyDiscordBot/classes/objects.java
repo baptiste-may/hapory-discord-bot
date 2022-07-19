@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -30,20 +31,26 @@ public class objects {
         return list;
     }
 
-    public static void add(User user, int money) throws SQLException {
+    public static void remove(User user, CustomObject object) throws SQLException {
 
+        final PreparedStatement preparedStatement = Utils.createPreparedStatement("DELETE FROM user_objects WHERE (uuid = ? AND name = ? AND description = ? AND rarity = ? AND price = ?)");
+        preparedStatement.setString(1, user.getId());
+        preparedStatement.setString(2, object.getName());
+        preparedStatement.setString(3, object.getDescription());
+        preparedStatement.setInt(4, object.getRarity());
+        preparedStatement.setInt(5, object.getPrice());
+        final boolean resultSet = preparedStatement.execute();
 
+        if (resultSet) {
+            EmbedBuilder embed = new EmbedBuilder()
+                    .setTitle("Objet retiré à " + user.getAsTag())
+                    .addField(object.getName(), object.getDescription(), false);
 
-        Objects.requireNonNull(logChannel).sendMessage("").queue();
+            Objects.requireNonNull(logChannel).sendMessage("").queue();
+        }
 
     }
 
-    public static void remove(User user, int money) throws SQLException {
 
-
-
-        Objects.requireNonNull(logChannel).sendMessage("").queue();
-
-    }
 
 }
